@@ -10,7 +10,7 @@
 
 type {{$modelName}}Marshaled{{$marshalerName}} struct {
 	{{range $field := $marshaler.Fields }}
-	{{titleCase $field.Name}} {{goType $field.GoType}} `json:"{{$field.Name}}"`
+	{{titleCase $field.Name}} {{goType $field.GoType}} `{{$field.GenerateTags}}`
 	{{- end }}
 }
 
