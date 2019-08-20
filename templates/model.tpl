@@ -67,3 +67,10 @@ func (o *{{$modelName}}) MarshalJSON() ([]byte, error) {
     panic("Model instances must not be JSON marshaled directly. Go through a marshaler instead")
 }
 {{ end }}
+func (o *{{$modelName}}) PrimaryKeyColumns() ([]string) {
+	return {{$modelNameCamel}}PrimaryKeyColumns
+}
+
+func (o {{$modelName}}Slice) PrimaryKeyColumns() ([]string) {
+	return {{$modelNameCamel}}PrimaryKeyColumns
+}
