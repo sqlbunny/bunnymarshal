@@ -25,6 +25,11 @@ func (o *{{$modelName}}) Marshal{{$marshalerName}}() *{{$modelName}}Marshaled{{$
 	}
 }
 
+func (o *{{$modelName}}) ReverseMarshal{{$marshalerName}}(m *{{$modelName}}Marshaled{{$marshalerName}}) {
+	{{range $field := $marshaler.Fields }}
+	o.{{titleCase $field.Name}} = m.{{titleCase $field.Name}}
+	{{- end }}
+}
 
 func (s {{$modelName}}Slice) Marshal{{$marshalerName}}() []*{{$modelName}}Marshaled{{$marshalerName}} {
 	if s == nil {
@@ -41,13 +46,24 @@ func (s {{$modelName}}Slice) Marshal{{$marshalerName}}() []*{{$modelName}}Marsha
 {{end}}
 
 func (o *{{$modelName}}) Marshal(marshaler string) interface{} {
-	switch(marshaler) {
+	switch marshaler {
 {{range $marshaler := .Marshalers -}}
 {{- $marshalerName := $marshaler.Name | titleCase -}}
 		case "{{$marshaler.Name}}": return o.Marshal{{$marshalerName}}()
-{{- end }}
+{{ end }}
 		default:
 			panic("Unknown marshaler for {{$modelName}}: " + marshaler)
+	}
+}
+
+func (o *{{$modelName}}) ReverseMarshal(m interface{}) {
+	switch m := m.(type) {
+{{range $marshaler := .Marshalers -}}
+{{- $marshalerName := $marshaler.Name | titleCase -}}
+		case *{{$modelName}}Marshaled{{$marshalerName}}: o.ReverseMarshal{{$marshalerName}}(m)
+{{ end }}
+		default:
+			panic("Unknown reverse marshaler for {{$modelName}}")
 	}
 }
 
@@ -56,7 +72,7 @@ func (s {{$modelName}}Slice) Marshal(marshaler string) interface{} {
 {{range $marshaler := .Marshalers -}}
 {{- $marshalerName := $marshaler.Name | titleCase -}}
 		case "{{$marshaler.Name}}": return s.Marshal{{$marshalerName}}()
-{{- end }}
+{{ end }}
 		default:
 			panic("Unknown marshaler for {{$modelName}}Slice: " + marshaler)
 	}
