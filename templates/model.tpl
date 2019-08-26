@@ -46,6 +46,7 @@ func (s {{$modelName}}Slice) Marshal{{$marshalerName}}() []*{{$modelName}}Marsha
 {{end}}
 
 func (o *{{$modelName}}) Marshal(marshaler string) interface{} {
+{{if .Marshalers}}
 	switch marshaler {
 {{range $marshaler := .Marshalers -}}
 {{- $marshalerName := $marshaler.Name | titleCase -}}
@@ -54,9 +55,13 @@ func (o *{{$modelName}}) Marshal(marshaler string) interface{} {
 		default:
 			panic("Unknown marshaler for {{$modelName}}: " + marshaler)
 	}
+{{ else }}
+	panic("Unknown marshaler for {{$modelName}}Slice: " + marshaler)
+{{ end }}
 }
 
 func (o *{{$modelName}}) ReverseMarshal(m interface{}) {
+{{if .Marshalers}}
 	switch m := m.(type) {
 {{range $marshaler := .Marshalers -}}
 {{- $marshalerName := $marshaler.Name | titleCase -}}
@@ -65,9 +70,13 @@ func (o *{{$modelName}}) ReverseMarshal(m interface{}) {
 		default:
 			panic("Unknown reverse marshaler for {{$modelName}}")
 	}
+{{ else }}
+	panic("Unknown reverse marshaler for {{$modelName}}")
+{{ end }}
 }
 
 func (s {{$modelName}}Slice) Marshal(marshaler string) interface{} {
+{{if .Marshalers}}
 	switch(marshaler) {
 {{range $marshaler := .Marshalers -}}
 {{- $marshalerName := $marshaler.Name | titleCase -}}
@@ -76,6 +85,9 @@ func (s {{$modelName}}Slice) Marshal(marshaler string) interface{} {
 		default:
 			panic("Unknown marshaler for {{$modelName}}Slice: " + marshaler)
 	}
+{{ else }}
+	panic("Unknown marshaler for {{$modelName}}Slice: " + marshaler)
+{{ end }}
 }
 
 {{ if .PoisonMarshalJSON }}
