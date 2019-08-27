@@ -3,8 +3,37 @@ package bunnymarshal
 import "github.com/sqlbunny/sqlbunny/schema"
 
 type ModelMarshaler struct {
-	Name   string
-	Fields []*schema.Field
+	Name         string
+	Fields       []*schema.Field
+	CustomFields []*MarshalerCustomField
+}
+
+type MarshalerCustomField struct {
+	Name     string
+	Type     schema.Type
+	Nullable bool
+
+	Tags schema.Tags
+
+	Expr string
+}
+
+func (f *MarshalerCustomField) GoType() schema.GoType {
+	if f.Nullable {
+		return f.Type.(schema.NullableType).GoTypeNull()
+	} else {
+		return f.Type.GoType()
+	}
+}
+
+func (f *MarshalerCustomField) GenerateTags() string {
+	if _, ok := f.Tags["json"]; !ok {
+		f.Tags["json"] = f.Name
+		if f.Nullable {
+			f.Tags["json"] += ",omitempty"
+		}
+	}
+	return f.Tags.String()
 }
 
 type modelMarshalersExtKey struct{}

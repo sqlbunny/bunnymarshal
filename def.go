@@ -1,6 +1,11 @@
 package bunnymarshal
 
-import "github.com/sqlbunny/sqlbunny/gen/core"
+import (
+	"fmt"
+
+	"github.com/sqlbunny/sqlbunny/gen/core"
+	"github.com/sqlbunny/sqlbunny/schema"
+)
 
 type MarshalerContext struct {
 	*core.ModelContext
@@ -56,5 +61,34 @@ func (d defField) MarshalerItem(ctx *MarshalerContext) {
 func Field(name string) defField {
 	return defField{
 		name: name,
+	}
+}
+
+type defCustomField struct {
+	name     string
+	typeName string
+	expr     string
+}
+
+func (d defCustomField) MarshalerItem(ctx *MarshalerContext) {
+	t := ctx.GetType(d.typeName, fmt.Sprintf("Marshaler '%s' field '%s'", ctx.Marshaler.Name, d.name))
+	if t == nil {
+		return
+	}
+
+	ctx.Marshaler.CustomFields = append(ctx.Marshaler.CustomFields, &MarshalerCustomField{
+		Name:     d.name,
+		Type:     t,
+		Nullable: false,
+		Tags:     schema.Tags{},
+		Expr:     d.expr,
+	})
+}
+
+func CustomField(name string, typeName string, expr string) defCustomField {
+	return defCustomField{
+		name:     name,
+		typeName: typeName,
+		expr:     expr,
 	}
 }

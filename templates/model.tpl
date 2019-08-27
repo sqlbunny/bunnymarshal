@@ -12,6 +12,9 @@ type {{$modelName}}Marshaled{{$marshalerName}} struct {
 	{{range $field := $marshaler.Fields }}
 	{{titleCase $field.Name}} {{goType $field.GoType}} `{{$field.GenerateTags}}`
 	{{- end }}
+	{{range $field := $marshaler.CustomFields }}
+	{{titleCase $field.Name}} {{goType $field.GoType}} `{{$field.GenerateTags}}`
+	{{- end }}
 }
 
 func (o *{{$modelName}}) Marshal{{$marshalerName}}() *{{$modelName}}Marshaled{{$marshalerName}} {
@@ -21,6 +24,9 @@ func (o *{{$modelName}}) Marshal{{$marshalerName}}() *{{$modelName}}Marshaled{{$
 	return &{{$modelName}}Marshaled{{$marshalerName}}{
         {{range $field := $marshaler.Fields }}
         {{titleCase $field.Name}}: o.{{titleCase $field.Name}},
+        {{- end }}
+        {{range $field := $marshaler.CustomFields }}
+        {{titleCase $field.Name}}: {{$field.Expr}},
         {{- end }}
 	}
 }
