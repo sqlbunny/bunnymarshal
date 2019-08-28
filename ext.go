@@ -6,6 +6,11 @@ type ModelMarshaler struct {
 	Name         string
 	Fields       []*schema.Field
 	CustomFields []*MarshalerCustomField
+	Loads        []*MarshalerLoad
+}
+
+type MarshalerLoad struct {
+	Name string
 }
 
 type MarshalerCustomField struct {

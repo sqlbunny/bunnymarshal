@@ -92,3 +92,19 @@ func CustomField(name string, typeName string, expr string) defCustomField {
 		expr:     expr,
 	}
 }
+
+type defLoad struct {
+	name string
+}
+
+func (d defLoad) MarshalerItem(ctx *MarshalerContext) {
+	ctx.Marshaler.Loads = append(ctx.Marshaler.Loads, &MarshalerLoad{
+		Name: d.name,
+	})
+}
+
+func Load(name string) defLoad {
+	return defLoad{
+		name: name,
+	}
+}
