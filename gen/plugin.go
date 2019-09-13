@@ -7,7 +7,7 @@ import (
 	"github.com/sqlbunny/sqlbunny/schema"
 )
 
-const templatesPackage = "github.com/sqlbunny/bunnymarshal"
+const templatesPackage = "github.com/sqlbunny/bunnymarshal/gen"
 
 type Plugin struct {
 	modelTemplate *gen.TemplateList
