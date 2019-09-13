@@ -1,4 +1,4 @@
-package bunnymarshal
+package gen
 
 import "github.com/sqlbunny/sqlbunny/schema"
 
@@ -7,9 +7,14 @@ type ModelMarshaler struct {
 	Fields       []*schema.Field
 	CustomFields []*MarshalerCustomField
 	Loads        []*MarshalerLoad
+	Expandables  []*MarshalerExpandable
 }
 
 type MarshalerLoad struct {
+	Name string
+}
+
+type MarshalerExpandable struct {
 	Name string
 }
 

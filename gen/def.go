@@ -1,4 +1,4 @@
-package bunnymarshal
+package gen
 
 import (
 	"fmt"
@@ -105,6 +105,22 @@ func (d defLoad) MarshalerItem(ctx *MarshalerContext) {
 
 func Load(name string) defLoad {
 	return defLoad{
+		name: name,
+	}
+}
+
+type defExpandable struct {
+	name string
+}
+
+func (d defExpandable) MarshalerItem(ctx *MarshalerContext) {
+	ctx.Marshaler.Expandables = append(ctx.Marshaler.Expandables, &MarshalerExpandable{
+		Name: d.name,
+	})
+}
+
+func Expandable(name string) defExpandable {
+	return defExpandable{
 		name: name,
 	}
 }
