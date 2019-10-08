@@ -212,6 +212,9 @@ func (o *{{$modelName}}) ReverseMarshal(ctx context.Context, m interface{}) erro
 func (o *{{$modelName}}) MarshalJSON() ([]byte, error) {
     panic("Model instances must not be JSON marshaled directly. Go through a marshaler instead")
 }
+func (o *{{$modelName}}) UnmarshalJSON(data []byte) error {
+    panic("Model instances must not be JSON marshaled directly. Go through a marshaler instead")
+}
 {{ end }}
 
 func (o *{{$modelName}}) PrimaryKeyColumns() ([]string) {
