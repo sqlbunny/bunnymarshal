@@ -61,3 +61,17 @@ func ModelAddMarshaler(m *schema.Model, s *ModelMarshaler) {
 	sers = append(sers, s)
 	m.SetExtension(modelMarshalersExtKey{}, sers)
 }
+
+func StructGetMarshalers(m *schema.Struct) []*ModelMarshaler {
+	r := m.GetExtension(modelMarshalersExtKey{})
+	if r == nil {
+		return nil
+	}
+	return r.([]*ModelMarshaler)
+}
+
+func StructAddMarshaler(m *schema.Struct, s *ModelMarshaler) {
+	sers := StructGetMarshalers(m)
+	sers = append(sers, s)
+	m.SetExtension(modelMarshalersExtKey{}, sers)
+}
