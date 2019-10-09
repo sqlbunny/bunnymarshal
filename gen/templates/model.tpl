@@ -16,8 +16,14 @@ type {{$modelName}}Marshaled{{$marshalerName}} struct {
 	{{titleCase $field.Name}} {{goType $field.GoType}} `{{$field.GenerateTags}}`
 	{{- end }}
 	{{range $e := $marshaler.Expandables }}
-	{{ $fk := FindToOneRelationship $dot.Model $e.Name -}}
-	{{ $fk.ForeignModel | titleCase }} *{{ $fk.ForeignModel | titleCase }}Marshaled{{$marshalerName}} `json:"{{$fk.ForeignModel}},omitempty"`
+	{{ $r := FindRelationship $dot.Model $e.Name -}}
+
+	{{- if $r.ToMany -}}
+	{{ $r.Name | titleCase }} []*{{ $r.ForeignModel | titleCase }}Marshaled{{$marshalerName}} `json:"{{$r.Name}},omitempty"`
+	{{ else -}}
+	{{ $r.Name | titleCase }} *{{ $r.ForeignModel | titleCase }}Marshaled{{$marshalerName}} `json:"{{$r.Name}},omitempty"`
+	{{ end -}}
+
 	{{- end }}
 }
 
@@ -39,9 +45,9 @@ func (o *{{$modelName}}) doMarshal{{$marshalerName}}(ctx context.Context, opts *
 			var err error
 			switch e {
 				{{range $e := $marshaler.Expandables }}
-				{{ $fk := FindToOneRelationship $dot.Model $e.Name -}}
-				case "{{$fk.ForeignModel}}":
-					res.{{ $fk.ForeignModel | titleCase }}, err = o.R.{{ $fk.ForeignModel | titleCase }}.Marshal{{$marshalerName}}(ctx, nil)
+				{{ $r := FindRelationship $dot.Model $e.Name -}}
+				case "{{$r.Name}}":
+					res.{{ $r.Name | titleCase }}, err = o.R.{{ $r.Name | titleCase }}.Marshal{{$marshalerName}}(ctx, nil)
 				{{- end }}
 				default:
 					err = &bunnymarshal.UnknownExpandableError{
@@ -71,9 +77,9 @@ func (o *{{$modelName}}) Marshal{{$marshalerName}}(ctx context.Context, opts *bu
 			var err error
 			switch e {
 				{{range $e := $marshaler.Expandables }}
-				{{ $fk := FindToOneRelationship $dot.Model $e.Name -}}
-				case "{{$fk.ForeignModel}}":
-					{{$modelNameCamel}}L{}.Load{{ $fk.ForeignModel | titleCase }}(ctx, true, o)
+				{{ $r := FindRelationship $dot.Model $e.Name -}}
+				case "{{$r.Name}}":
+					{{$modelNameCamel}}L{}.Load{{ $r.Name | titleCase }}(ctx, []*{{$modelName}}{o})
 				{{- end }}
 				default:
 					err = &bunnymarshal.UnknownExpandableError{
@@ -104,9 +110,9 @@ func (s {{$modelName}}Slice) Marshal{{$marshalerName}}(ctx context.Context, opts
 			var err error
 			switch e {
 				{{range $e := $marshaler.Expandables }}
-				{{ $fk := FindToOneRelationship $dot.Model $e.Name -}}
-				case "{{$fk.ForeignModel}}":
-					{{$modelNameCamel}}L{}.Load{{ $fk.ForeignModel | titleCase }}(ctx, false, (*[]*{{$modelName}})(&s))
+				{{ $r := FindRelationship $dot.Model $e.Name -}}
+				case "{{$r.Name}}":
+					{{$modelNameCamel}}L{}.Load{{ $r.Name | titleCase }}(ctx, s)
 				{{- end }}
 				default:
 					err = &bunnymarshal.UnknownExpandableError{

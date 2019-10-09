@@ -21,9 +21,9 @@ func (*Plugin) ConfigItem(ctx *gen.Context) {}
 
 func (p *Plugin) BunnyPlugin() {
 	// TODO fix this horrible hack. The plugin API should have a way to define custom functions for plugin templates.
-	gen.TemplateFunctions["FindToOneRelationship"] = func(t *schema.Model, name string) *schema.ForeignKey {
-		for _, r := range t.ForeignKeys {
-			if len(r.Columns) == 1 && r.Columns[0] == name+"_id" {
+	gen.TemplateFunctions["FindRelationship"] = func(t *schema.Model, name string) *schema.Relationship {
+		for _, r := range t.Relationships {
+			if r.Name == name {
 				return r
 			}
 		}

@@ -30,6 +30,8 @@ github.com/sqlbunny/errors v0.0.0-20190927201458-cf9913986328 h1:E5YZCd9IXSq/lM/
 github.com/sqlbunny/errors v0.0.0-20190927201458-cf9913986328/go.mod h1:q09kWQOmbbE2SkkN+8K4qW1HCkwPPyakfLnUQGedwWg=
 github.com/sqlbunny/sqlbunny v0.0.0-20190927211424-f66be0103a50 h1:9L4wDPNqb4NtaWNKiXJkmwWI9+3fzjLUUspZEtXybXU=
 github.com/sqlbunny/sqlbunny v0.0.0-20190927211424-f66be0103a50/go.mod h1:VTaxCrj8/5+lqY4kshrcjo9GnxZiZuxhykkFLrfggkQ=
+github.com/sqlbunny/sqlbunny v0.0.0-20191009213339-bf7c46d582a5 h1:QqdYqAtfi2OTbRjQ+oeS1Ibn1vf4r4Yctlfjewb+nQU=
+github.com/sqlbunny/sqlbunny v0.0.0-20191009213339-bf7c46d582a5/go.mod h1:VTaxCrj8/5+lqY4kshrcjo9GnxZiZuxhykkFLrfggkQ=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
 github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8/go.mod h1:VFNgLljTbGfSG7qAOspJ7OScBnGdDN/yBr0sguwnwf0=
 github.com/volatiletech/inflect v0.0.0-20170731032912-e7201282ae8d h1:gI4/tqP6lCY5k6Sg+4k9qSoBXmPwG+xXgMpK7jivD4M=
