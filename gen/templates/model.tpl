@@ -69,7 +69,7 @@ func (o *{{$modelName}}) Marshal{{$marshalerName}}(ctx context.Context, opts *bu
     }
 
 	{{range $load := $marshaler.Loads }}
-	{{$modelNameCamel}}L{}.Load{{$load.Name | titleCase}}(ctx, true, o)
+	{{$modelNameCamel}}L{}.Load{{$load.Name | titleCase}}(ctx, []*{{$modelName}}{o})
 	{{- end }}
 
 	if opts != nil {
@@ -103,7 +103,7 @@ func (s {{$modelName}}Slice) Marshal{{$marshalerName}}(ctx context.Context, opts
 	}
 
 	{{range $load := $marshaler.Loads }}
-	{{$modelNameCamel}}L{}.Load{{$load.Name | titleCase}}(ctx, false, (*[]*{{$modelName}})(&s))
+	{{$modelNameCamel}}L{}.Load{{$load.Name | titleCase}}(ctx, s)
 	{{- end }}
 	if opts != nil {
 		for _, e := range opts.Expand {
