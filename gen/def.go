@@ -124,3 +124,29 @@ func Expandable(name string) defExpandable {
 		name: name,
 	}
 }
+
+type defInherit struct {
+	name string
+}
+
+func (d defInherit) MarshalerItem(ctx *MarshalerContext) {
+	ctx.Enqueue(400, func() {
+		m1 := ctx.Marshaler
+		m2 := ModelFindMarshaler(ctx.Model, d.name)
+		if m2 == nil {
+			ctx.AddError("Marshaler %s does not exist", d.name)
+			return
+		}
+
+		m1.Fields = append(m1.Fields, m2.Fields...)
+		m1.CustomFields = append(m1.CustomFields, m2.CustomFields...)
+		m1.Loads = append(m1.Loads, m2.Loads...)
+		m1.Expandables = append(m1.Expandables, m2.Expandables...)
+	})
+}
+
+func Inherit(name string) defInherit {
+	return defInherit{
+		name: name,
+	}
+}

@@ -56,6 +56,16 @@ func ModelGetMarshalers(m *schema.Model) []*ModelMarshaler {
 	return r.([]*ModelMarshaler)
 }
 
+func ModelFindMarshaler(m *schema.Model, name string) *ModelMarshaler {
+	ms := ModelGetMarshalers(m)
+	for _, ma := range ms {
+		if ma.Name == name {
+			return ma
+		}
+	}
+	return nil
+}
+
 func ModelAddMarshaler(m *schema.Model, s *ModelMarshaler) {
 	sers := ModelGetMarshalers(m)
 	sers = append(sers, s)
