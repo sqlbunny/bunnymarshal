@@ -50,7 +50,7 @@ type defField struct {
 }
 
 func (d defField) MarshalerItem(ctx *MarshalerContext) {
-	f := ctx.Model.FindField(d.name)
+	f := ctx.Model.FindField(schema.Path{d.name})
 	if f == nil {
 		ctx.AddError("Model %s marshaler %s: field %s does not exist", ctx.Model.Name, ctx.Marshaler.Name, d.name)
 		return

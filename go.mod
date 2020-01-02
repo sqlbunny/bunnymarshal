@@ -1,5 +1,5 @@
 module github.com/sqlbunny/bunnymarshal
 
-go 1.12
+go 1.13
 
-require github.com/sqlbunny/sqlbunny v0.0.0-20191009213339-bf7c46d582a5
+require github.com/sqlbunny/sqlbunny v0.0.0-20200102171839-30eabf5aa4ee
