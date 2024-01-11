@@ -35,6 +35,8 @@ github.com/sqlbunny/sqlbunny v0.0.0-20200102171839-30eabf5aa4ee h1:JJ4x1dDR3EBLx
 github.com/sqlbunny/sqlbunny v0.0.0-20200102171839-30eabf5aa4ee/go.mod h1:2K4gSBbc3w1ePz8OVcLZ82VNPOXVJiQK2ECfTwyS60E=
 github.com/sqlbunny/sqlbunny v0.0.0-20240110154719-46fcaee84570 h1:kHz3sZ8JQ//YJ8p7BqUIRSiF82/1XeWvDpqXiGQQn8w=
 github.com/sqlbunny/sqlbunny v0.0.0-20240110154719-46fcaee84570/go.mod h1:WrNP0rYah3s7jeLvV4oJ4L5C8lWZ1gNK05lim/0AWd8=
+github.com/sqlbunny/sqlbunny v0.0.0-20240111144247-a8603a224884 h1:xsKM4UGqPhG4UgBDlU/svZ3ITDPbMmCWtsAlrEup/oY=
+github.com/sqlbunny/sqlbunny v0.0.0-20240111144247-a8603a224884/go.mod h1:WrNP0rYah3s7jeLvV4oJ4L5C8lWZ1gNK05lim/0AWd8=
 github.com/sqlbunny/sqlschema v0.0.0-20200102171723-0240ac422151 h1:aUj8+T5fa5BHSUPZ1qiqlV19idoFMRpCKF2PknDxo4k=
 github.com/sqlbunny/sqlschema v0.0.0-20200102171723-0240ac422151/go.mod h1:4GlbxCxpZY/Zjmf/HCxo2cLuUHxY0WK93CQpd5110YY=
 github.com/sqlbunny/sqlschema v0.0.0-20200106010312-30ff3295bbdf/go.mod h1:4GlbxCxpZY/Zjmf/HCxo2cLuUHxY0WK93CQpd5110YY=
