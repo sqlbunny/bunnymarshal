@@ -68,18 +68,22 @@ func (o *{{$modelName}}) Marshal{{$marshalerName}}(ctx context.Context, opts *bu
         return nil, nil
     }
 
+	var err error
+
 	{{range $load := $marshaler.Loads }}
-	{{$modelNameCamel}}L{}.Load{{$load.Name | titleCase}}(ctx, []*{{$modelName}}{o})
+	err = {{$modelNameCamel}}L{}.Load{{$load.Name | titleCase}}(ctx, []*{{$modelName}}{o})
+	if err != nil {
+		return nil, err
+	}
 	{{- end }}
 
 	if opts != nil {
 		for _, e := range opts.Expand {
-			var err error
 			switch e {
 				{{range $e := $marshaler.Expandables }}
 				{{ $r := FindRelationship $dot.Model $e.Name -}}
 				case "{{$r.Name}}":
-					{{$modelNameCamel}}L{}.Load{{ $r.Name | titleCase }}(ctx, []*{{$modelName}}{o})
+					err = {{$modelNameCamel}}L{}.Load{{ $r.Name | titleCase }}(ctx, []*{{$modelName}}{o})
 				{{- end }}
 				default:
 					err = &bunnymarshal.UnknownExpandableError{
@@ -102,17 +106,21 @@ func (s {{$modelName}}Slice) Marshal{{$marshalerName}}(ctx context.Context, opts
         return nil, nil
 	}
 
+	var err error
+
 	{{range $load := $marshaler.Loads }}
-	{{$modelNameCamel}}L{}.Load{{$load.Name | titleCase}}(ctx, s)
+	err = {{$modelNameCamel}}L{}.Load{{$load.Name | titleCase}}(ctx, s)
+	if err != nil {
+		return nil, err
+	}
 	{{- end }}
 	if opts != nil {
 		for _, e := range opts.Expand {
-			var err error
 			switch e {
 				{{range $e := $marshaler.Expandables }}
 				{{ $r := FindRelationship $dot.Model $e.Name -}}
 				case "{{$r.Name}}":
-					{{$modelNameCamel}}L{}.Load{{ $r.Name | titleCase }}(ctx, s)
+					err = {{$modelNameCamel}}L{}.Load{{ $r.Name | titleCase }}(ctx, s)
 				{{- end }}
 				default:
 					err = &bunnymarshal.UnknownExpandableError{
@@ -127,7 +135,6 @@ func (s {{$modelName}}Slice) Marshal{{$marshalerName}}(ctx context.Context, opts
 	}
 
 	res := make([]*{{$modelName}}Marshaled{{$marshalerName}}, len(s))
-	var err error
 	for i, o := range s {
 		res[i], err = o.doMarshal{{$marshalerName}}(ctx, opts)
 		if err !=  nil {
@@ -139,7 +146,7 @@ func (s {{$modelName}}Slice) Marshal{{$marshalerName}}(ctx context.Context, opts
 
 {{end}}
 
-func (o *{{$modelName}}) Marshal(ctx context.Context, marshaler string, opts *bunnymarshal.Options) (interface{}, error) {
+func (o *{{$modelName}}) Marshal(ctx context.Context, marshaler string, opts *bunnymarshal.Options) (any, error) {
 {{if .Marshalers}}
 	switch marshaler {
 {{range $marshaler := .Marshalers -}}
@@ -160,7 +167,7 @@ func (o *{{$modelName}}) Marshal(ctx context.Context, marshaler string, opts *bu
 {{ end }}
 }
 
-func (s {{$modelName}}Slice) Marshal(ctx context.Context, marshaler string, opts *bunnymarshal.Options) (interface{}, error) {
+func (s {{$modelName}}Slice) Marshal(ctx context.Context, marshaler string, opts *bunnymarshal.Options) (any, error) {
 {{if .Marshalers}}
 	switch(marshaler) {
 {{range $marshaler := .Marshalers -}}
@@ -191,7 +198,7 @@ func (o *{{$modelName}}) ReverseMarshal{{$marshalerName}}(ctx context.Context, m
 }
 {{ end }}
 
-func (o *{{$modelName}}) ReverseMarshal(ctx context.Context, m interface{}) error {
+func (o *{{$modelName}}) ReverseMarshal(ctx context.Context, m any) error {
 {{if .Marshalers}}
 	switch m := m.(type) {
 {{range $marshaler := .Marshalers -}}
