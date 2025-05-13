@@ -34,7 +34,7 @@ func (p *Plugin) BunnyPlugin() {
 	gen.OnHook("model", p.modelHook)
 }
 
-func (p *Plugin) modelHook(buf *bytes.Buffer, data map[string]interface{}, args ...interface{}) {
+func (p *Plugin) modelHook(buf *bytes.Buffer, data map[string]any, args ...any) {
 	m := data["Model"].(*schema.Model)
 	data["Marshalers"] = ModelGetMarshalers(m)
 	data["PoisonMarshalJSON"] = p.PoisonMarshalJSON
